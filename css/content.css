@@ -1,0 +1,31 @@
+#contentHolder {
+    position: relative;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+#ballHolder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.ballBag {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    overflow: visible;
+}
+
+.ball {
+    position: relative;
+    width: 75%;
+    z-index: 8;
+}

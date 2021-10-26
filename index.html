@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gameoftricks</title>
+        <meta charset="utf-8"/>
+
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/content.css">
+        <link rel="stylesheet" href="css/background.css">
+
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/animate.js"></script>
+        <script type="text/javascript" src="js/ball.js"></script>
+        <script type="text/javascript" src="js/paint.js"></script>
+    </head>
+    <body> 
+        <div id="backgroundHolder">
+            <div id="background">
+                <canvas id="backgroundCanvas"></canvas>
+            </div>
+        </div>
+        <div id="contentHolder">
+            <div id="ballHolder">
+                <div class="ballBag" id="ballBag"> 
+                    <img class="ball" id="ball" src="media/boule.png" alt="boule"/>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const paint = new Paint(byid('backgroundCanvas'));
+        balls();
+        window.onresize = () => {
+            balls();
+        };
+    </script>
+</html>
