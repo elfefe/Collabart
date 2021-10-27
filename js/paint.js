@@ -12,6 +12,10 @@ class Paint {
                 this.color = "#" + randomHex(6);
         }
 
+        brushColor(color) {
+                this.color = color;
+        }
+
         brushSize(size) {
                 this.brushsize = size;
         }
@@ -22,23 +26,24 @@ class Paint {
         }
 
         draw() {
-
                 const context = this.canvas.getContext('2d');
         
                 this.canvas.onmousemove = (e) => {
-                        const centerX = e.clientX;
-                        const centerY = e.clientY;
-                        const radius = this.brushsize;
-        
-                        context.beginPath();
-                        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                        
-                        const gradient = context.createRadialGradient(centerX,centerY,0,centerX,centerY,radius);
-                        gradient.addColorStop(0, this.color + "99");
-                        gradient.addColorStop(1, this.color + "00");
-                        
-                        context.fillStyle = gradient;
-                        context.fill();
+                        if (e.buttons === 0) {
+                                const centerX = e.clientX;
+                                const centerY = e.clientY;
+                                const radius = this.brushsize;
+                
+                                context.beginPath();
+                                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                                
+                                const gradient = context.createRadialGradient(centerX,centerY,0,centerX,centerY,radius);
+                                gradient.addColorStop(0, this.color + "99");
+                                gradient.addColorStop(1, this.color + "00");
+                                
+                                context.fillStyle = gradient;
+                                context.fill();
+                        }
                 }; 
         }
 }

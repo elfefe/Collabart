@@ -1,37 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Gameoftricks</title>
-        <meta charset="utf-8"/>
 
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/content.css">
-        <link rel="stylesheet" href="css/background.css">
+<head>
+    <title>Gameoftricks</title>
+    <meta charset="utf-8" />
 
-        <script type="text/javascript" src="js/utils.js"></script>
-        <script type="text/javascript" src="js/animate.js"></script>
-        <script type="text/javascript" src="js/ball.js"></script>
-        <script type="text/javascript" src="js/paint.js"></script>
-    </head>
-    <body> 
-        <div id="backgroundHolder">
-            <div id="background">
-                <canvas id="backgroundCanvas"></canvas>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/background.css">
+    <link rel="stylesheet" href="css/videoplayer.css">
+
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/animate.js"></script>
+    <script type="text/javascript" src="js/ball.js"></script>
+    <script type="text/javascript" src="js/paint.js"></script>
+
+    <script type="text/javascript" src="js/lib/jscolor.min.js"></script>
+</head>
+
+<body>
+    <div id="backgroundHolder">
+        <div id="background">
+            <canvas id="backgroundCanvas"></canvas>
+        </div>
+        <div id="paintconfigBag">
+            <div id="paintsizeBag">
+                <input id="paintsize" type="range" min="1" max="250" value="1">
+                <p id="paintsizeValue"></p>
+            </div>
+            <input id="paintcolor" data-jscolor="{}">
+            <div id="paintinfo">
+                <p id="paintinfoNopaint">Clique pour ne pas peindre !</p>
+            </div>
+            <a id="paintDownload" download="GraphTricks.png">
+                <img src="media/download_black_24.svg" />
+            </a>
+        </div>
+    </div>
+    <div id="contentHolder">
+        <div id="ballHolder">
+            <div class="ballBag" id="ballBag">
+                <img class="ball" id="ball" src="media/boule.png" alt="boule" />
             </div>
         </div>
-        <div id="contentHolder">
-            <div id="ballHolder">
-                <div class="ballBag" id="ballBag"> 
-                    <img class="ball" id="ball" src="media/boule.png" alt="boule"/>
+        <div id="videoplayerHolder">
+            <div id="videoplayerBag">
+                <img id="videoplayer" src="media/sous menu video.png" />
+                <div id="videoHolder">
+                    <iframe id="video" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" type="text/html"
+                        src="https://www.youtube.com/embed/O1Ff3WJchV8?autoplay=1&fs=1&enablejsapi=1&iv_load_policy=3&controls=1&showinfo=0&rel=0&cc_load_policy=0&modestbranding=1&start=0&end=0"></iframe>
                 </div>
             </div>
         </div>
-    </body>
-    <script>
-        const paint = new Paint(byid('backgroundCanvas'));
-        balls();
-        window.onresize = () => {
-            balls();
-        };
-    </script>
+    </div>
+</body>
+<script>
+    const paint = new Paint(byid('backgroundCanvas'));
+    const balls = new Ball(
+        byid('ballHolder'),
+        byid('ballBag'),
+        byid('ball')
+    );
+    const player = byid('videoplayerHolder');
+    player.style.display = 'none';
+    balls.onclickball('ball5', () => {
+        player.style.display = 'flex';
+    });
+    player.onclick = () => {
+        player.style.display = 'none';
+    };
+    const paintcolor = new JSColor('#paintcolor', {format:'HEX'});
+    paintcolor.onChange = () => {
+        paint.brushColor(paintcolor.toString());
+    };
+    const paintsize = byid('paintsize');
+    const paintsizevalue = byid('paintsizeValue');
+    setInterval(() => {
+        paintsizevalue.innerHTML = paintsize.value + "px";
+        paint.brushSize(parseFloat(paintsize.value));
+    }, 50);
+    const paintdownload = byid('paintDownload');
+    paintdownload.onclick = () => {
+        const image = paint.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        paintdownload.href = image;
+    };
+    window.onresize = () => {
+        balls.redraw();
+        paint.resize();
+    };
+</script>
+
 </html>

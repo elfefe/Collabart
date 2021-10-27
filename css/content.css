@@ -27,5 +27,5 @@
 .ball {
     position: relative;
     width: 75%;
-    z-index: 8;
+    z-index: 7;
 }
