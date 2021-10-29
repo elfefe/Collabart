@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/content.css">
     <link rel="stylesheet" href="css/background.css">
+    <link rel="stylesheet" href="css/paintconfig.css">
     <link rel="stylesheet" href="css/videoplayer.css">
 
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/animate.js"></script>
     <script type="text/javascript" src="js/ball.js"></script>
     <script type="text/javascript" src="js/paint.js"></script>
+    <script type="text/javascript" src="js/paintconfig.js"></script>
 
     <script type="text/javascript" src="js/lib/jscolor.min.js"></script>
 </head>
@@ -23,19 +25,24 @@
         <div id="background">
             <canvas id="backgroundCanvas"></canvas>
         </div>
-        <div id="paintconfigBag">
-            <div id="paintsizeBag">
-                <input id="paintsize" type="range" min="1" max="250" value="1">
-                <p id="paintsizeValue"></p>
-            </div>
-            <input id="paintcolor" data-jscolor="{}">
-            <div id="paintinfo">
-                <p id="paintinfoNopaint">Clique pour ne pas peindre !</p>
-            </div>
+    </div>
+    <div id="paintconfigBag">
+        <div id="paintsizeBag">
+            <input id="paintsize" type="range" min="1" max="250" value="1">
+            <p id="paintsizeValue"></p>
+        </div>
+        <input id="paintcolor" data-jscolor="{}">
+        <div id="paintinfo">
+            <p id="paintinfoNopaint">Clique pour ne pas peindre !</p>
+        </div>
+        <div id="paintbuttonsHolder">
             <a id="paintDownload" download="GraphTricks.png">
                 <img src="media/download_black_24.svg" />
             </a>
         </div>
+        <a id="paintshow">
+            <img src="media/brush_black_24.svg" />
+        </a>
     </div>
     <div id="contentHolder">
         <div id="ballHolder">
@@ -69,21 +76,15 @@
     player.onclick = () => {
         player.style.display = 'none';
     };
-    const paintcolor = new JSColor('#paintcolor', {format:'HEX'});
-    paintcolor.onChange = () => {
-        paint.brushColor(paintcolor.toString());
-    };
-    const paintsize = byid('paintsize');
-    const paintsizevalue = byid('paintsizeValue');
-    setInterval(() => {
-        paintsizevalue.innerHTML = paintsize.value + "px";
-        paint.brushSize(parseFloat(paintsize.value));
-    }, 50);
-    const paintdownload = byid('paintDownload');
-    paintdownload.onclick = () => {
-        const image = paint.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        paintdownload.href = image;
-    };
+
+    const paintconfig = new PaintColor(
+        byid('paintshow'),
+        '#paintcolor',
+        byid('paintsize'),
+        byid('paintsizeValue'),
+        byid('paintDownload'),
+        paint
+    );
     window.onresize = () => {
         balls.redraw();
         paint.resize();

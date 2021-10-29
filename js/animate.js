@@ -2,6 +2,12 @@ class Animate {
     constructor(element) {
         this.element = element;
         this.interval = [];
+
+        this.end = null;
+    }
+
+    onEnd(callback) {
+        this.end = callback;
     }
 
     movement(property, from, to, time = 1, unit = "%", easing = Animate.EASING.linear) {
@@ -23,6 +29,7 @@ class Animate {
             } else {
                 this.element.style[property] = to + unit;
                 clearInterval(this.interval[property]);
+                if (this.end) this.end();
             }
             period += 10;
         }, 10);
