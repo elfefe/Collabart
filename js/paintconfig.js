@@ -40,17 +40,12 @@ class PaintColor {
         }
 
         triggershow() {
-                console.log("CLICK");
                 const bag = this.ocbutton.parentElement;
                 array(bag.children).forEach((child, index) => {
                         if (child.id !== this.ocbutton.id) {
-                                const anim = new Animate(child);
-                                anim.onEnd(() => {
-                                        child.style.display = this.state ? 'flex': 'none';
-                                        bag.style.height = this.state ? '20%': '24px';
-                                        bag.style.width = this.state ? 'auto': '24px';
-                                });
-                                anim.movement("opacity", this.state ? 1: 0, this.state ? 0: 1, 1, "");
+                                child.style.display = this.state ? 'flex': 'none';
+                                bag.style.height = this.state ? '20%': '24px';
+                                bag.style.width = this.state ? 'auto': '24px';
                         }
                 });
                 this.state = !this.state;

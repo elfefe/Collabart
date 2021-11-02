@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/paintconfig.css">
     <link rel="stylesheet" href="css/videoplayer.css">
 
+    <script type="text/javascript" src="js/json/buttonscontent.js"></script>
+
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/animate.js"></script>
     <script type="text/javascript" src="js/ball.js"></script>
@@ -48,6 +50,7 @@
         <div id="ballHolder">
             <div class="ballBag" id="ballBag">
                 <img class="ball" id="ball" src="media/boule.png" alt="boule" />
+                <span class="text" id="text"></span>
             </div>
         </div>
         <div id="videoplayerHolder">
@@ -66,7 +69,8 @@
     const balls = new Ball(
         byid('ballHolder'),
         byid('ballBag'),
-        byid('ball')
+        byid('ball'),
+        byid('text')
     );
     const player = byid('videoplayerHolder');
     player.style.display = 'none';

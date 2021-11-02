@@ -1,12 +1,14 @@
 class Ball {
-    constructor(ballHolder, ballbag, ball) {
+    constructor(ballHolder, ballbag, ball, text) {
         this.ballHolder = ballHolder;
         this.ballbag = ballbag;
         this.ball = ball;
+        this.text = text;
 
         this.ballBagSize = 15;
-        this.ballMinSize = 50;
-        this.ballMaxSize = 70;
+        this.ballMinSize = 80;
+        this.ballMaxSize = 100;
+        this.bounceoffset = -20;
 
         this.balls();
     };
@@ -26,7 +28,7 @@ class Ball {
 
     balls() {
     
-        const clones = 12;
+        const clones = buttonscontent.length;
 
         const alreadyloaded = this.ballHolder.children.length === clones + 1;
     
@@ -35,8 +37,8 @@ class Ball {
         
         const ratio = w / h;
     
-        this.ballbag.style.width = this.ballBagSize + "%";
-        this.ballbag.style.height = this.ballBagSize * ratio + "%";
+        this.ballbag.style.width = this.ballBagSize / ratio + "%";
+        this.ballbag.style.height = this.ballBagSize + "%";
     
         const originx = (w / 2) - this.ballbag.clientWidth / 2;
         const originy = (h / 2) - this.ballbag.clientWidth / 2;
@@ -53,27 +55,37 @@ class Ball {
 
             const ballbagSibling = alreadyloaded ? this.ballHolder.children[ballbag.id + i] : this.ballbag.cloneNode(true);
                 
-            const ballSibling = ballbagSibling.children[ball.id + (alreadyloaded ? i : "")];
+            const ballSibling = ballbagSibling.children[this.ball.id + (alreadyloaded ? i : "")];
+            const textSibling = ballbagSibling.children[this.text.id + (alreadyloaded ? i : "")];
     
             ballbagSibling.id = this.ballbag.className + i;
             ballSibling.id = this.ball.id + i;
+            textSibling.id = this.text.id + i;
+
+            textSibling.innerHTML = buttonscontent[i];
+            
             if (!alreadyloaded) {
                 this.ballbag.after(ballbagSibling);
     
                 const anim = new Animate(ballSibling);
+                let asclicked = false;
         
                 ballSibling.onmouseover = () => {
                     ballSibling.style.cursor = "pointer";
+                };
+                ballSibling.onmouseout = () => {
+                    if (asclicked) {
+                        ballSibling.style.zIndex = "7";
+                        anim.movement("width", this.ballMaxSize, this.ballMinSize, 0.5, "%", Animate.EASING.easeInBack);
+                        anim.movement("height", this.ballMaxSize, this.ballMinSize, 0.5, "%", Animate.EASING.easeInBack);
+                        asclicked = false;
+                    }
+                };
+                ballSibling.onclick = () => {
+                    asclicked = true;
                     ballSibling.style.zIndex = "8";
                     anim.movement("width", this.ballMinSize, this.ballMaxSize, 1, "%", Animate.EASING.easeOutElastic);
                     anim.movement("height", this.ballMinSize, this.ballMaxSize, 1, "%", Animate.EASING.easeOutElastic);
-                };
-                ballSibling.onmouseout = () => {
-                    ballSibling.style.zIndex = "7";
-                    anim.movement("width", this.ballMaxSize, this.ballMinSize, 0.5, "%", Animate.EASING.easeInBack);
-                    anim.movement("height", this.ballMaxSize, this.ballMinSize, 0.5, "%", Animate.EASING.easeInBack);
-                };
-                ballSibling.onclick = () => {
                     paint.randomiseColor();
                 };
             }
@@ -82,7 +94,7 @@ class Ball {
             ballbagSibling.style.top = (y) + "px";
         }
     
-        const ballWidth = ((r * 2) / w) * 100;
+        const ballWidth = ((r * 2) / w) * 80;
     
         this.ballbag.style.width = ballWidth + "%";
         this.ballbag.style.height = (ballWidth) + "%";

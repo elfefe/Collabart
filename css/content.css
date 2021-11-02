@@ -26,6 +26,17 @@
 
 .ball {
     position: relative;
+    object-fit: contain;
     width: 75%;
     z-index: 7;
+}
+
+.text {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 8;
+    text-align: center;
+    font-size: small;
+    pointer-events: none;
 }
